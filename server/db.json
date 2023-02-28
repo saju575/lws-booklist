@@ -26,6 +26,15 @@
       "rating": 4,
       "featured": true,
       "id": 4
+    },
+    {
+      "thumbnail": "https://visme.co/blog/wp-content/uploads/2021/06/bedtime-story-book-cover-template-visme.jpg",
+      "featured": false,
+      "name": "A journey to moon",
+      "author": "Max Born",
+      "price": 500,
+      "rating": 3,
+      "id": 5
     }
   ]
 }
