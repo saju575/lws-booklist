@@ -1,13 +1,24 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import deleteBook from "../Redux/BookStore/thunk/deleteBook";
+import { addBookInfo } from "../Redux/BookInfoData/actions";
 
-export const BookCard = ({ book }) => {
+export const BookCard = ({ book, isOnEdit }) => {
+  // get one book information by props
   const { name, author, thumbnail, price, rating, featured, id } = book;
+
+  //get dispatch function
   const dispatch = useDispatch();
+
   //handle deletion of book
   const handleDeleteBook = () => {
     dispatch(deleteBook(id));
+  };
+
+  //handle edit information of book
+  const handleEditBook = () => {
+    isOnEdit(true);
+    dispatch(addBookInfo(book));
   };
   return (
     <div className="book-card">
@@ -22,7 +33,7 @@ export const BookCard = ({ book }) => {
             <span className="badge-success lws-Badge">featured</span>
           )}
           <div className="text-gray-500 space-x-2">
-            <button className="lws-edit">
+            <button className="lws-edit" onClick={handleEditBook}>
               <svg
                 fill="none"
                 viewBox="0 0 24 24"
@@ -58,6 +69,8 @@ export const BookCard = ({ book }) => {
         <div className="space-y-2 mt-4 h-full">
           <h4 className="lws-bookName">{name}</h4>
           <p className="lws-author">{author}</p>
+
+          {/* showing star rating dayamically */}
           <div className="lws-stars">
             {Array(rating)
               .fill(1)

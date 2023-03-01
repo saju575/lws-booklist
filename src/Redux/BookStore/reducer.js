@@ -1,4 +1,4 @@
-import { ADD_BOOK, DELETE_BOOK, LOAD_BOOKS } from "./actionTypes";
+import { ADD_BOOK, DELETE_BOOK, LOAD_BOOKS, UPDATE_BOOK } from "./actionTypes";
 import bookStore from "./initialState";
 
 const newBookId = (state) => {
@@ -25,6 +25,16 @@ const bookReducer = (state = bookStore, action) => {
 
     case DELETE_BOOK:
       return state.filter((book) => book.id !== action.id);
+
+    case UPDATE_BOOK:
+      return state.map((book) => {
+        if (book.id === action.payload.id) {
+          return {
+            ...action.payload,
+          };
+        }
+        return book;
+      });
 
     default:
       return state;

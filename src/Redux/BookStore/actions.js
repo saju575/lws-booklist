@@ -21,10 +21,9 @@ export const deleteBookFromStore = (id) => {
   };
 };
 
-export const updateBook = (id, bookInfo) => {
+export const updateBookToStore = (bookInfo) => {
   return {
     type: UPDATE_BOOK,
     payload: bookInfo,
-    id,
   };
 };

@@ -1,7 +1,14 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import logo from "../images/logo.svg";
+import { changeInputText } from "../Redux/BookSearchField/actions";
 
 export const Navbar = () => {
+  /*get searchInput field text from redux store*/
+  const searchText = useSelector((store) => store.bookSearch);
+
+  /*dispatch reference to dispatch action*/
+  const dispatch = useDispatch();
   return (
     <nav className="py-4 2xl:px-6">
       <div className="container flex items-center justify-between">
@@ -13,7 +20,12 @@ export const Navbar = () => {
           <li className="cursor-pointer">My Collection</li>
         </ul>
 
-        <form className="flex items-center">
+        <form
+          className="flex items-center"
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
           <div className="group relative rounded-md bg-white">
             <svg
               width="20"
@@ -32,6 +44,10 @@ export const Navbar = () => {
               placeholder="Filter books..."
               className="search"
               id="lws-searchBook"
+              value={searchText.searchedText}
+              onChange={(e) => {
+                dispatch(dispatch(changeInputText(e.target.value)));
+              }}
             />
           </div>
         </form>

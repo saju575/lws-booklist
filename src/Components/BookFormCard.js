@@ -1,14 +1,19 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import addBook from "../Redux/BookStore/thunk/addBook";
+import React, { useEffect, useState } from "react";
 
-export const BookFormCard = () => {
+export const BookFormCard = ({ editBookInfo, handleSubmit, formType }) => {
+  // get bookUpdateInfo state from redux state
   const [bookFormInfo, setBookFormInfo] = useState({});
-  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // is used to pass the updatedable book information into local form state
+    editBookInfo && setBookFormInfo({ ...editBookInfo });
+  }, [editBookInfo]);
+
   // onChange handler for book form
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
+
     setBookFormInfo((allValue) => {
       return {
         ...allValue,
@@ -17,25 +22,25 @@ export const BookFormCard = () => {
       };
     });
   };
-  // onSubmit handler for book form
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    dispatch(addBook(bookFormInfo));
-    setBookFormInfo({
-      name: "",
-      author: "",
-      thumbnail: "",
-      price: "",
-      description: "",
-      featured: false,
-    });
-  };
 
   return (
     <div className="p-4 overflow-hidden bg-white shadow-cardShadow rounded-md">
       <h4 className="mb-8 text-xl font-bold text-center">Add New Book</h4>
-      <form className="book-form" onSubmit={handleSubmit}>
+      <form
+        className="book-form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(bookFormInfo);
+          setBookFormInfo({
+            name: "",
+            author: "",
+            thumbnail: "",
+            price: "",
+            description: "",
+            featured: false,
+          });
+        }}
+      >
         <div className="space-y-2">
           <label htmlFor="input-Bookname">Book Name</label>
           <input
@@ -86,9 +91,8 @@ export const BookFormCard = () => {
               name="price"
               value={bookFormInfo.price || ""}
               onChange={(e) => {
-                setBookFormInfo({
-                  ...bookFormInfo,
-                  price: e.target.valueAsNumber,
+                setBookFormInfo((values) => {
+                  return { ...values, price: e.target.valueAsNumber };
                 });
               }}
             />
@@ -106,9 +110,8 @@ export const BookFormCard = () => {
               max="5"
               value={bookFormInfo.rating || ""}
               onChange={(e) => {
-                setBookFormInfo({
-                  ...bookFormInfo,
-                  rating: e.target.valueAsNumber,
+                setBookFormInfo((values) => {
+                  return { ...values, rating: e.target.valueAsNumber };
                 });
               }}
             />
@@ -131,7 +134,7 @@ export const BookFormCard = () => {
         </div>
 
         <button type="submit" className="submit" id="submit">
-          Add Book
+          {formType}
         </button>
       </form>
     </div>
